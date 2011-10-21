@@ -1,0 +1,66 @@
+body,td,th {
+	font-size: 11px;
+	color: #FFFFFF;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+body {
+	background-color: #022142;
+}
+
+  div.main{
+  margin-left: auto; margin-right: auto; 
+  } 
+a:link {color:#022142;FONT-SIZE: 10px; FONT-FAMILY: Verdana, Helvetica;text-decoration:underline}
+a:active {color:#022142;FONT-SIZE: 10px; FONT-FAMILY: Verdana, Helvetica;text-decoration:none}
+a:visited {color:#bd3e3e;FONT-SIZE: 10px; FONT-FAMILY: Verdana, Helvetica;text-decoration:none}
+a:hover {color:#ffffff;FONT-SIZE: 10px; FONT-FAMILY: Verdana, Helvetica;text-decoration:underline}
+    div.grmtop {
+	
+      width: 700px;
+      background-color: #000000;
+      background-image: url(../images/grmtop.gif);
+      background-position: top;
+      background-repeat: repeat-x; 
+    }
+    div.grmright {
+      background-image: url(../images/grmright1.gif);
+      background-position: top right;
+      background-repeat: repeat-y;
+    }
+    div.grmbot {
+      background-image: url(../images/grmbtr1.jpg);
+      background-position: bottom left;
+      background-repeat: repeat-x;
+    }
+    div.grmleft {
+            background-image: url(../images/grmleft.gif);
+      background-position: top left;
+      background-repeat: repeat-y;
+    }
+    div.grmlcorner {
+      background-image: url(../images/content1grm.gif);
+      background-position: top left;
+      background-repeat: no-repeat;
+    }
+    div.grmrcorner {
+      background-image: url(../images/grmright.gif);
+      background-position: top right;
+      background-repeat: no-repeat;
+    }
+    div.grmblcorner {
+      background-image: url(../images/grmbtr.gif);
+      background-position: bottom left;
+      background-repeat: no-repeat;
+    }
+    div.grmbrcorner {
+      background-image: url(../images/grmbtr2.gif);
+      background-position: bottom right;
+      background-repeat: no-repeat;
+      padding: 110px 8px 50px 8px;
+    }
+    div.innercontent {
+      width: 98%;  
+    }
+	div.tabcenter{
+	padding: 5px 90px 5px 90px;
+	}

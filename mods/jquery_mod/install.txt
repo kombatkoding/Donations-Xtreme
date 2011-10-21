@@ -1,0 +1,56 @@
+##############################################################
+## Mod Title: jQuery
+## Mod Author: Xtreme Team, jQuery Team
+##             http://darkforgegfx.com/ http://jquery.com/
+##
+## Mod Description: jQuery framework for Nuke Evolution
+##
+## Installation Level: Easy
+## Installation Time: 5 Minutes
+## Requirements: 
+## ============================================================
+##
+## Files To Edit: 1
+##	
+##
+## Included Files: 1
+##  
+##############################################################
+
+#
+#-----[ COPY ]--------------------------------------------
+#
+copy jquery.min.js to includes/js/jquery.min.js
+
+#
+#-----[ OPEN ]---------------------------------------------
+#
+includes/javascript.php
+
+#
+#-----[ FIND ]---------------------------------------------
+#
+
+/*****[BEGIN]******************************************
+ [ Base:    Switch Content Script              v2.0.0 ]
+ ******************************************************/
+
+#
+#-----[ BEFORE, ADD ]--------------------------------------
+#
+/*****[BEGIN]******************************************
+ [ Mod:     jQuery                             v1.4.1 ]
+ ******************************************************/
+echo "<script type=\"text/javascript\" src=\"includes/js/jquery.min.js\"></script>\n";
+echo "<script type=\"text/javascript\">var nuke_jq = jQuery.noConflict();</script>\n";
+/*****[END]********************************************
+ [ Mod:     jQuery                             v1.4.1 ]
+ ******************************************************/
+
+#
+#-----[ SAVE/CLOSE FILE ]----------------------------------
+#
+#   You're done.
+#	Any Evolution Xtreme components utilising the jQuery
+#	framework may now be used on your website.
+#

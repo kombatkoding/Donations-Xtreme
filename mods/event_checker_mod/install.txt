@@ -1,0 +1,62 @@
+##########################################################
+## Mod Name:    Event Checker for Donations Xtreme
+## Mod Authors:  Travo
+## Mod Version: 1.0
+## Mod Notes:   - Allows time based events to work
+		- If you change the Donations folder, also
+		  change the paths in this file.
+## Website:     www.darkforgegfx.com (Copyright © 2010)
+###########################################################
+## Pre-Install
+## -----------
+## Please make sure to backup the files you need to edit.
+## We can not be held responsible for any errors that may
+## occur if you ignore this warning!!!
+###########################################################
+## Change Log
+## ----------
+##
+## No change log (24-4-2010)
+###########################################################
+
+#
+#----[ OPEN ]-------------------------
+#
+
+mainfile.php
+
+#
+#----[ FIND ]-------------------------
+#
+
+/*****[END]********************************************
+ [ Base:    Admin File Check                   v3.0.0 ]
+ ******************************************************/
+ 
+#
+#----[ ADD, AFTER ]-------------------
+#
+
+/*****[BEGIN]******************************************
+[ Module:    Donations Xtreme Event Checker     v 1.0 ]
+******************************************************/
+$donations_xtreme_events_checker_installed = true;
+include NUKE_MODULES_DIR.'Donations/events_last_checked.php';
+if ($donations_xtreme_events_last_checked < (time()-86400)){
+	include NUKE_MODULES_DIR.'Donations/functions.php';
+	check_events();
+	if ($f = fopen(NUKE_MODULES_DIR.'Donations/events_last_checked.php', 'w')){
+		fwrite($f, '<?php $donations_xtreme_events_last_checked = '.time().';');
+		fclose($f);
+	}
+}
+/*****[END]********************************************
+[ Module:    Donations Xtreme Event Checker     v 1.0 ]
+******************************************************/
+ 
+ 
+(save and close)
+
+
+## End of mod
+## This mod was brought to you by DarkForgeGfx

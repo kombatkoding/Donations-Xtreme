@@ -1,0 +1,125 @@
+##########################################################
+## Mod Name:    Profile Mod Addon for (Donations Xtreme)
+## Mod Authors: SgtLegend, Travo
+## Mod Version: 1.0.0
+## Mod Notes:   Refer to install instructions
+## Website:     www.darkforgegfx.com (Copyright © 2010)
+###########################################################
+## Pre-Install
+## -----------
+## Please make sure to backup the files you need to edit.
+## We can not be held responsible for any errors that may
+## occur if you ignore this warning!!!
+###########################################################
+## Change Log
+## ----------
+##
+## No change log (24-4-2010)
+###########################################################
+
+#
+#----[ OPEN ]-------------------------
+#
+
+includes/usercp_viewprofile.php
+
+#
+#----[ FIND ]-------------------------
+#
+
+/*****[END]********************************************
+ [ Mod:    YA Merge                            v1.0.0 ]
+ ******************************************************/
+ 
+#
+#----[ ADD, AFTER ]-------------------
+#
+
+/*****[BEGIN]******************************************
+ [ Mod:    Donations Xtreme Profile Mod        v1.0.0 ]
+ ******************************************************/
+include_once(NUKE_MODULES_DIR.'Donations/language/lang-'.$currentlang.'.php');
+$res = $db->sql_query('SELECT currency.* FROM `'.$prefix.'_donations_config` AS config LEFT JOIN `'.$prefix.'_donations_currency` AS currency ON config.`currency` = currency.`currency`');
+list($currency, $currency_symbol) = $db->sql_fetchrow($res);
+
+$template->assign_vars(array(
+	'DONATIONS_HEADING' => _DONATIONS_USER_STATS,
+	'DONATIONS_EVENT' => _DONATIONS_EVENT,
+	'DONATIONS_AMOUNT' => _DONATIONS_AMOUNT,
+	'DONATIONS_CURRENCY' => $currency,
+	'DONATIONS_CURRENCY_SYMBOL' => $currency_symbol
+));
+
+$events[0] = _DONATIONS_SITE_DONATIONS;
+$res = $db->sql_query('SELECT `id`, `title` FROM `'.$prefix.'_donations_events`');
+while($row = $db->sql_fetchrow($res)){
+	$events[$row['id']] = $row['title'];
+}
+$res = $db->sql_query('(SELECT `mc_gross`, `mc_currency`, `currency_symbol`, `settle_amount`, `event_id` FROM `'.$prefix.'_donations` WHERE `user_id`=\''.$profiledata['user_id'].'\' ORDER BY `payment_date` DESC) UNION (SELECT `mc_gross`, `mc_currency`, `currency_symbol`, `settle_amount`, `event_id` FROM `'.$prefix.'_donations_archive` WHERE `user_id`=\''.$profiledata['user_id'].'\' ORDER BY `payment_date` DESC)');
+
+if ($db->sql_numrows($res)>0){
+	while ($row = $db->sql_fetchrow($res)){
+		$template->assign_block_vars('donations', array('event_id'=> $row['event_id'], 'event'=>$events[$row['event_id']], 'settle'=>$row['settle_amount'], 'gross'=>$row['mc_gross'], 'symbol'=>$row['currency_symbol'], 'currency'=>$row['mc_currency']));
+	}
+	$template->assign_block_vars('show_donations', array());
+}else{
+	$template->assign_block_vars('no_donations', array());
+}
+/*****[END]********************************************
+ [ Mod:    Donations Xtreme Profile Mod        v1.0.0 ]
+ ******************************************************/
+ 
+ 
+(save and close)
+
+#
+#----[ OPEN ]-------------------------
+#
+
+themes/{theme_name}/forums/profile_view_body.tpl
+
+#
+#----[ FIND ]-------------------------
+#
+
+<!-- END show_groups -->
+
+#
+#----[ ADD, AFTER ]-------------------
+#
+
+		<tr>
+		  <td colspan="2">
+        <table width="100%" cellpadding="4" cellspacing="1" border="0" class="forumline">
+		  <tr>
+		    <th class="thHead" colspan="3">{DONATIONS_HEADING}</th>
+		  </tr>
+		  
+<!-- BEGIN show_donations -->
+		  <tr>
+		    <td class="catBottom" style="text-align: center; font-weight: bold;">{DONATIONS_EVENT}</td>
+		    <td class="catBottom" colspan="2" style="text-align: center; font-weight: bold;">{DONATIONS_AMOUNT}</td>
+		  </tr>
+<!-- END show_donations -->
+<!-- BEGIN donations -->
+		  <tr>
+		    <td class="row1" align="center"><a href="modules.php?name=Donations&op=Donate&id={donations.event_id}">{donations.event}</a></td>
+		    <td class="row1" align="center">{donations.symbol}{donations.gross} {donations.currency}</td>
+		    <td class="row1" align="center">{DONATIONS_CURRENCY_SYMBOL}{donations.settle} {DONATIONS_CURRENCY}</td>
+		  </tr>
+<!-- END donations -->
+<!-- BEGIN no_donations -->
+		  <tr>
+		    <td class="catBottom" style="text-align: center;">No current donations</td>
+		  </tr>
+<!-- END no_donations -->
+		</table>
+		  </td>
+		</tr>
+		
+
+(save and close)
+
+
+## End of mod
+## This mod was brought to you by DarkForgeGfx

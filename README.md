@@ -6,8 +6,6 @@
 DarkForge Graphics http://www.darkforgegfx.com  
 Kombat Koding http://www.kombatkoding.com  
 
-___
-
 ## Installation Instructions
 
 Please note - The donations module which comes
@@ -17,11 +15,9 @@ and MySQL tables.
 
 Please note - A premier or business PayPal account is
 required for this module to function. Some paypal
-settings are also required:
-*	IPN must be enabled at
-	Pofile->Instant Payment Notifications
-*	Multicurrency conversion must be enabled at
-	Profile->Payment Receiving Preferences
+settings are also required:  
+*   IPN must be enabled at Pofile->Instant Payment Notifications  
+*   Multicurrency conversion must be enabled at Profile->Payment Receiving Preferences
 
 
 
@@ -34,5 +30,5 @@ see paypal.com for more information.
 
 ---
 
-Thankyou for downloading Donations Xtreme
+Thankyou for downloading Donations Xtreme  
  - The DFG Development Team

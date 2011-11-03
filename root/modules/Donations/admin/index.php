@@ -54,7 +54,7 @@ if (is_mod_admin($module_name)){
 			$res = $db->sql_query('SELECT `site_active`, `site_target` FROM `'.$prefix.'_donations_config`');
 			list($site_donations_active, $site_target) = $db->sql_fetchrow($res);
 			
-			$res = $db->sql_query('SELECT `user_id`, `first_name`, `last_name`, `settle_amount`, `event_id`, `payment_date` FROM `'.$prefix.'_donations`');
+			$res = $db->sql_query('SELECT `user_id`, `first_name`, `last_name`, `settle_amount`, `event_id`, `payment_date` FROM `'.$prefix.'_donations` UNION SELECT `user_id`, `first_name`, `last_name`, `settle_amount`, `event_id`, `payment_date` FROM `'.$prefix.'_donations_archive`');
 			$donators = array();
 			$stats['week'] = array('number'=>0, 'amount'=>0);
 			$stats['month'] = array('number'=>0, 'amount'=>0);

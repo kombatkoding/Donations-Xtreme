@@ -1,9 +1,12 @@
 # Donations Xtreme 1.2
+
 ---
-(c) Travo 2011
-DarkForge Graphics http://www.darkforgegfx.com
-Kombat Koding http://www.kombatkoding.com
----
+
+(c) Travo 2011  
+DarkForge Graphics http://www.darkforgegfx.com  
+Kombat Koding http://www.kombatkoding.com  
+
+___
 
 ## Installation Instructions
 
@@ -28,6 +31,7 @@ We recommend you test that the module woks with your
 account using PayPal sandbox before going live. You
 can enable sandbox inside the admin panel. Please
 see paypal.com for more information.
+
 ---
 
 Thankyou for downloading Donations Xtreme

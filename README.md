@@ -1,10 +1,11 @@
-Donations Xtreme 1.2
+# Donations Xtreme 1.2
+---
 (c) Travo 2011
 DarkForge Graphics http://www.darkforgegfx.com
 Kombat Koding http://www.kombatkoding.com
+---
 
-
-Installation Instructions
+## Installation Instructions
 
 Please note - The donations module which comes
 with Nuke Evolution must be completely uninstalled
@@ -14,9 +15,9 @@ and MySQL tables.
 Please note - A premier or business PayPal account is
 required for this module to function. Some paypal
 settings are also required:
- - IPN must be enabled at
+*	IPN must be enabled at
 	Pofile->Instant Payment Notifications
- - Multicurrency conversion must be enabled at
+*	Multicurrency conversion must be enabled at
 	Profile->Payment Receiving Preferences
 
 
@@ -27,7 +28,7 @@ We recommend you test that the module woks with your
 account using PayPal sandbox before going live. You
 can enable sandbox inside the admin panel. Please
 see paypal.com for more information.
-
+---
 
 Thankyou for downloading Donations Xtreme
  - The DFG Development Team

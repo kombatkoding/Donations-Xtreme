@@ -24,31 +24,6 @@ function list_donations(){
 	$res = $db->sql_query('SELECT currency.*, config.`site_active` FROM `'.$prefix.'_donations_config` AS config LEFT JOIN `'.$prefix.'_donations_currency` AS currency ON config.`currency` = currency.`currency`');
 	list($currency, $currency_symbol, $site_active) = $db->sql_fetchrow($res);
 	
-	if (isset($_POST['complete'])){
-		$user = (int) $_POST['user_id'];
-		$first_name = $_GETVAR->get('first_name', '_POST');
-		$last_name = $_GETVAR->get('last_name', '_POST');
-		$email = $_GETVAR->get('email', '_POST');
-		$amount = (float) $_POST['amount'];
-		$event = (int) $_POST['event'];
-		
-		if ($event!=0){
-			$res = $db->sql_query('SELECT `title` FROM `'.$prefix."_donations_events` WHERE `id`='$event'");
-			if ($db->sql_numrows($res)==0){
-				$event=0;
-				$itemname = _DONATIONS_TO.' '.$sitename;
-			}else{
-				list($event_title) = $db->sql_fetchrow($res);
-				global $sitename;
-				$itemname = _DONATIONS_TO.' '.$sitename.' '._DONATIONS_FOR.' '.$row['title'];
-			}
-		}
-		$time = time();
-		$db->sql_query('INSERT INTO `'.$prefix."_donations` (`user_id`,`item_name`,`item_number`,`payment_status`,`payment_date`,`mc_gross`,`mc_fee`,`mc_currency`,`settle_amount`,`exchange_rate`,`first_name`,`last_name`,`payer_email`,`currency_symbol`,`event_id`) VALUES ('$user', '$item_name', '$event', 'Completed', '$time', '$amount','0','$currency','$amount','1','$first_name','$last_name','$email','$currency_symbol','$event')");
-		$db->sql_query('UPDATE `'.$prefix.'_donations_events` SET `current`=`current`+'.$amount.' WHERE `id`='.$event);
-		
-	}
-	
 	$sort_value = false;
 	$order = '`payment_date` DESC';
 	$order_value= 'date';
@@ -83,6 +58,8 @@ function list_donations(){
 	echo '	function donation_submit(){';
 	echo '		var error = false;';
 	echo '		var user = nuke_jq(\'#user_id\').val();';
+	echo '		var first_name = nuke_jq(\'#first_name\').val();';
+	echo '		var last_name = nuke_jq(\'#last_name\').val();';
 	echo '		var amount = nuke_jq(\'#amount\').val();';
 	echo '		if (isNaN(user)||user==""||user<0){';
 	echo '			error = true;';
@@ -100,7 +77,18 @@ function list_donations(){
 	echo '			nuke_jq(\'#amount_error\').hide();';
 	echo '		}';
 	echo '		if (error==false){';
-	echo '			nuke_jq(\'#add_donation_form\').get(0).submit();';
+	echo '			nuke_jq.post(';
+	echo '				"'.$admin_file.'.php?op=Donations_Ajax&func=AddDonation",';
+	echo '				nuke_jq("#add_donation_form").serialize(),';
+	echo '				function(data){';
+	echo '					if(data.response==true){';
+	echo '						alert("Donation Added");';
+	echo '						nuke_jq("#donations_table_heading").after(\'<tr><td class="row1" style="text-align:center;font-weight:bold;">\'+data.user+\'</td><td class="row1" style="text-align:center;">\'+data.status+\'</td><td class="row1" style="text-align:center;">\'+data.amount+\'</td><td class="row1" style="text-align:center;">\'+data.amount+\'</td><td class="row1" style="text-align:center;">\'+data.date+\'</td><td class="row1" style="text-align:center;">\'+data.event+\'</td><td class="row1" style="text-align:center;"><a href="\'+data.link+\'">'._DONATIONS_VIEW_LINK.'</td></tr>\');';
+	echo '					}else{';
+	echo '						alert("An error occurred, please try again.");';
+	echo '					}';
+	echo '				},';
+	echo '				"json");';
 	echo '		}';
 	echo '	}';
 	echo '</script>';
@@ -152,7 +140,6 @@ function list_donations(){
 	echo '<a href="javascript:void();" onclick="nuke_jq(\'#new_donation\').slideToggle();return false;">'._DONATIONS_MANUALLY_ADD.'</a>';
 	echo '<div id="new_donation" style="width:450px;margin:0 auto;text-align:left;display:none;">';
 	echo '<form id="add_donation_form" action="'.$admin_file.'.php?op=Donations_View" method="post" onsubmit="return false;">';
-	echo '<input type="hidden" name="complete" value="1" />';
 	echo '<table style="width:100%;">';
 	echo '<tr><td class="row1" style="width:25%;text-align:right;">'._DONATIONS_USER_ID.' *</td>';
 	echo '<td class="row1" style="width:75%;padding-left:5px;font-weight:bold;">';
@@ -187,14 +174,14 @@ function list_donations(){
 	}
 	echo '</select>';
 	echo '<tr><td class="row1" colspan="2" style="width:25%;text-align:center;">* '._DONATIONS_REQUIRED_FIELDS.'</td></tr>';
-	echo '<tr><td class="row1" colspan="2" style="width:25%;text-align:center;"><a href="#" onclick="donation_submit();return false;" style="font-weight:bold;">'._DONATIONS_ADD.'</button></td></tr>';	
+	echo '<tr><td class="row1" colspan="2" style="width:25%;text-align:center;"><a href="javascript:void();" onclick="donation_submit();return false;" style="font-weight:bold;">'._DONATIONS_ADD.'</button></td></tr>';	
 	echo '</table>';
 	echo '</form>';
 	echo '</div>';
 	echo '</div>';
 	CloseTable();
 	OpenTable();
-	echo '<table style="width:100%;border-spacing:0;"><tr><th class="row1">'._DONATIONS_DONATOR.'</th><th class="row1">'._DONATIONS_STATUS.'</th><th class="row1">'._DONATIONS_AMOUNT.'</th><th class="row1">'._DONATIONS_SETTLE_AMOUNT.'</th><th class="row1">'._DONATIONS_DATE.'</th><th class="row1">'._DONATIONS_EVENT.'</th><th class="row1">'._DONATIONS_VIEW_LINK.'</th></tr>';
+	echo '<table style="width:100%;border-spacing:0;"><tr id="donations_table_heading"><th class="row1">'._DONATIONS_DONATOR.'</th><th class="row1">'._DONATIONS_STATUS.'</th><th class="row1">'._DONATIONS_AMOUNT.'</th><th class="row1">'._DONATIONS_SETTLE_AMOUNT.'</th><th class="row1">'._DONATIONS_DATE.'</th><th class="row1">'._DONATIONS_EVENT.'</th><th class="row1">'._DONATIONS_VIEW_LINK.'</th></tr>';
 	
 	$events[0] = _DONATIONS_SITE_DONATIONS;
 	$res = $db->sql_query('SELECT `id`, `title` FROM `'.$prefix.'_donations_events`');

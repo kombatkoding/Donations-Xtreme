@@ -19,7 +19,6 @@ if (!defined('ADMIN_FILE')) {
 }
 
 $module_name = basename(dirname(dirname(__FILE__)));
-
 switch($op){
     case 'Donations':
     case 'Donations_Blocks':
@@ -28,7 +27,7 @@ switch($op){
     case 'Donations_View':
         include(NUKE_MODULES_DIR.$module_name.'/admin/index.php');
     break;
-
+	case 'Donations_Ajax'; include(NUKE_MODULES_DIR.$module_name.'/admin/ajax.php'); break;
 }
 
 ?>

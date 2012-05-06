@@ -82,7 +82,8 @@ if (strcmp($id, $_GET['id'])!=0){
 	echo '			nuke_jq(\'#custom_amount_row\').hide();';
 	echo '		}';
 	echo '	}';
-	echo '	function donation_submit(){';
+	echo '	nuke_jq(\'body\').delegate(\'#donation_submit\', \'click\', function(e) {';
+	echo '		e.preventDefault();';
 	echo '		var error = false;';
 	echo '		if (nuke_jq(\'#amount\').val()==-1){';
 	echo '			var amount = nuke_jq(\'#custom_donation_amount\').val();';
@@ -106,7 +107,7 @@ if (strcmp($id, $_GET['id'])!=0){
 	echo '		if (error==false){';
 	echo '			nuke_jq(\'#donations_form\').get(0).submit();';
 	echo '		}';
-	echo '	}';
+	echo '	});';
 	echo '</script>';
 	
 	global $sitename;
@@ -171,7 +172,7 @@ if (strcmp($id, $_GET['id'])!=0){
 	}
 	echo '</td></tr>';
 	echo '<tr><td class="row1" colspan="2" style="text-align:center;">';
-	echo '<a href="javascript: void();" onclick="donation_submit();return false;"><img style="width:110px;height:23px;border:0;" src="modules/'.$module_name.'/img/btn_donate_small.gif" title="Donate" alt="Donate" /></a>';
+	echo '<a href="#" id="donation_submit"><img style="width:110px;height:23px;border:0;" src="modules/'.$module_name.'/img/btn_donate_small.gif" title="Donate" alt="Donate" /></a>';
 	echo '</td></tr>';
 	echo '</table>';
 	echo '</form>';

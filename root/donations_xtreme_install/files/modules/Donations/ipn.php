@@ -44,13 +44,14 @@ foreach ($_POST as $key => $value){
 
 $ipn_host = 'www.' . ((isset($_POST['test_ipn'])) ? 'sandbox.' : '') .  'paypal.com';
 
-if ($dx_config['use_curl'] && function_exists('curl_init') && $curl = curl_init('http://'.$ipn_host.'/cgi-bin/webscr')){
+if ($dx_config['use_curl'] && function_exists('curl_init') && $curl = curl_init('https://'.$ipn_host.'/cgi-bin/webscr')){
 	curl_setopt($curl, CURLOPT_POST, true);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $req);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($curl, CURLOPT_TIMEOUT, 4);
 	curl_setopt($curl, CURLOPT_FAILONERROR, true);
 	curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 	$errornum = curl_errno($curl);
 	$errortext = curl_error($curl);
 	if ($errornum){
@@ -59,13 +60,14 @@ if ($dx_config['use_curl'] && function_exists('curl_init') && $curl = curl_init(
 		$res = curl_exec($curl);
 		curl_close($curl);
 	}
-	
 }else{
 	$header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
+	$header .= 'Host: '.$ipn_host."\r\n";
 	$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-	$header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
+	$header .= 'Content-Length: ' . strlen($req) . "\r\n";
+	$header .= "Connection: Close\r\n\r\n";
 
-	$fp = fsockopen ($ipn_host, 80, $errno, $errstr, 30);
+	$fp = fsockopen ('ssl://'.$ipn_host, 443, $errno, $errstr, 30);
 	if (!$fp){
 		ipn_error(_DONATIONS_ERRORS_IPN_SOCKET.' '.$errno.': '.$errstr, _DONATIONS_ERRORS_IPN_FAIL_CONNECT);
 		exit();
@@ -89,6 +91,8 @@ if (strcmp ($res, 'VERIFIED') == 0){
 	}
 	ipn_error($error_str, _DONATIONS_ERRORS_IPN_INVALID);
 	exit();
+}else{
+	ipn_error('Data returned: '.$res);
 }
 
 $business = addslashes($_POST['business']);

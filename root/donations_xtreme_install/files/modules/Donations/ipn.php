@@ -20,8 +20,10 @@ if (!defined('NUKE_EVO')||defined('MODULE_FILE')){
 
 $module_name = 'Donations';
 $currentlang = 'english';
+
 include_once NUKE_MODULES_DIR.$module_name.'/language/lang-'.$currentlang.'.php';
 require_once NUKE_MODULES_DIR.$module_name.'/functions.php';
+
 global $adminmail;
 global $db, $prefix;
 if ($res = $db->sql_query('SELECT * FROM `'.$prefix.'_donations_config`')){
